@@ -22,7 +22,7 @@ public class OrderTest {
         driver.findElement(By.xpath(".//button[text()='да все привыкли']")).click();
 
         HomePage homePage = new HomePage(driver);
-        homePage.clickOrderButtonTop();  // нажать верхнюю кнопку Заказать
+        homePage.clickOrderButtonTop();  //нажать верхнюю кнопку Заказать
 
         OrderPage orderPage = new OrderPage(driver);
         orderPage.fillFirstPart("Афина", "Дандадан", "ул. Ленина, 5", "Черкизовская", "89991112233");
@@ -46,13 +46,15 @@ public class OrderTest {
         OrderPage orderPage = new OrderPage(driver);
         orderPage.fillFirstPart("Петр", "Пупкин", "ул. Пушкина, 10", "Сокольники", "89991112233");
         orderPage.fillSecondPart("02.07.2026", "сутки", "black", "Позвонить за час");
-
+        orderPage.clickOrderButton();
+        orderPage.confirmOrder();
         System.out.println("Тест выполнен, заказ не создан из-за бага в Chrome");
     }
 
-    // Закрытие браузера после каждого теста
+    //Закрытие браузера после каждого теста
     @After
     public void tearDown() {
-            driver.quit();
+
+        driver.quit();
     }
 }

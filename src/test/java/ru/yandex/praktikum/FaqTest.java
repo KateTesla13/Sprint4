@@ -13,17 +13,17 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class FaqTest {
 
-    private final int index;// индекс вопроса
-    private final String expectedText; // ожидаемый текст ответа
+    private final int index;//индекс вопроса
+    private final String expectedText; //ожидаемый текст ответа
     private WebDriver driver;
 
-    // конструктор для параметризации
+    //конструктор для параметризации
     public FaqTest(int index, String expectedText) {
         this.index = index;
         this.expectedText = expectedText;
     }
 
-    // данные для теста: индекс вопроса, ожидаемый текст
+    //данные для теста: индекс вопроса, ожидаемый текст
     @Parameterized.Parameters
     public static Object[][] getAnsor() {
         return new Object[][]{
@@ -38,7 +38,7 @@ public class FaqTest {
         };
     }
 
-    // проверяем текст ответа на вопрос
+    //проверяем текст ответа на вопрос
     @Test
     public void checkAnswer() {
         driver = new ChromeDriver();
@@ -50,9 +50,10 @@ public class FaqTest {
         assertEquals("Текст ответа для вопроса " + index + " не совпадает", expectedText, actualText);
     }
 
-    // закрытие браузера после каждого теста
+    //закрытие браузера после каждого теста
     @After
     public void tearDown() {
-            driver.quit();
+
+        driver.quit();
         }
     }

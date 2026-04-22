@@ -2,6 +2,10 @@ package ru.yandex.praktikum.pageobject;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class OrderPage {
 
@@ -21,8 +25,8 @@ public class OrderPage {
     private final By blackColor = By.xpath(".//label[text()='чёрный жемчуг']/input"); //черный цвет самоката
     private final By greyColor = By.xpath(".//label[text()='серая безысходность']/input"); //серый цвет самоката
     private final By comment = By.xpath(".//input[@placeholder='Комментарий для курьера']"); //комментарий для курьера
-    private final By orderButton = By.xpath(".//button[contains(text(),'Заказать')]"); //кнопка заказать
-
+    private final By orderButton = By.xpath("(.//button[contains(@class, 'Button_Button__ra12g') and contains(@class, 'Button_Middle__1CSJM')])[last()]"); //кнопка заказать
+    private final By yesButton = By.xpath(".//button[text()='Да']"); //кнопка Да
 
     public OrderPage(WebDriver driver) {
         this.driver = driver;
@@ -51,7 +55,7 @@ public class OrderPage {
         driver.findElement(By.xpath("//div[text()='" + stationName + "']")).click();
     }
 
-    //Клик по кнопке «Далее»
+    //Клик по кнопке Далее
     public void clickNextButton() {
         driver.findElement(nextButton).click();
     }
@@ -73,7 +77,7 @@ public class OrderPage {
 
     //Выбор срока аренды из выпадающего списка
     public void selectRentalPeriod(String period) {
-        driver.findElement(By.xpath("//body")).click(); // закрыть календарь, чтобы не перекрывал элементы
+        driver.findElement(By.xpath("//body")).click(); //закрыть календарь, чтобы не перекрывал элементы
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -96,16 +100,17 @@ public class OrderPage {
         driver.findElement(comment).sendKeys(commentText);
     }
 
-    //Клик по кнопке «Заказать»
-    public void clickOrderButton() {
+    //Клик по кнопке Заказать
+        public void clickOrderButton() {
         driver.findElement(orderButton).click();
-        System.out.println("Кнопка 'Заказать' нажата");
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
+
+    //Клик по кнопке Да
+    public void confirmOrder() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(yesButton)).click();
+    }
+
 
     //Заполнение всей второй части формы оформления заказа
     public void fillSecondPart(String date, String period, String color, String commentText) {
@@ -114,5 +119,6 @@ public class OrderPage {
         selectColor(color);
         setComment(commentText);
         clickOrderButton();
+        confirmOrder();
     }
 }
