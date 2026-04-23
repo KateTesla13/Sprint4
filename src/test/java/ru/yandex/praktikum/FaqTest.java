@@ -1,21 +1,16 @@
 package ru.yandex.praktikum;
 
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import ru.yandex.praktikum.pageobject.HomePage;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class FaqTest {
+public class FaqTest extends BaseTest {
 
     private final int index;//индекс вопроса
     private final String expectedText; //ожидаемый текст ответа
-    private WebDriver driver;
 
     //конструктор для параметризации
     public FaqTest(int index, String expectedText) {
@@ -24,7 +19,7 @@ public class FaqTest {
     }
 
     //данные для теста: индекс вопроса, ожидаемый текст
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Вопрос {0}, ожидаемый текст: {1}")
     public static Object[][] getAnsor() {
         return new Object[][]{
                 {0, "Сутки — 400 рублей. Оплата курьеру — наличными или картой."},
@@ -41,19 +36,8 @@ public class FaqTest {
     //проверяем текст ответа на вопрос
     @Test
     public void checkAnswer() {
-        driver = new ChromeDriver();
-        driver.get("https://qa-scooter.praktikum-services.ru/");
-
-        HomePage homePage = new HomePage(driver);
         String actualText = homePage.getAnswerText(index);
 
         assertEquals("Текст ответа для вопроса " + index + " не совпадает", expectedText, actualText);
     }
-
-    //закрытие браузера после каждого теста
-    @After
-    public void tearDown() {
-
-        driver.quit();
-        }
-    }
+}

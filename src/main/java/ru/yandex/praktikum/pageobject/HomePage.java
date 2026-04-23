@@ -6,16 +6,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class HomePage {
-    private WebDriver driver;
+    private final WebDriver driver;
 
     //Локатор верхней кнопки Заказать
-    private By orderButtonTop = By.className("Button_Button__ra12g");
+    private final By orderButtonTop = By.className("Button_Button__ra12g");
 
     //Локатор нижней кнопки Заказать
-    private By orderButtonBottom = By.cssSelector(".Button_Button__ra12g.Button_Middle__1CSJM");
+    private final By orderButtonBottom = By.cssSelector(".Button_Button__ra12g.Button_Middle__1CSJM");
+
+    //Локатор куки
+    private final By acceptCookiesButton = By.xpath(".//button[text()='да все привыкли']");
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
+    }
+
+    //Принимаем куки
+    public void acceptCookies() {
+        driver.findElement(acceptCookiesButton).click();
     }
 
     //Клик по верхней кнопке Заказать + прокрутка страницы
@@ -28,12 +36,7 @@ public class HomePage {
     public void clickOrderButtonBottom() {
         WebElement button = driver.findElement(orderButtonBottom);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", button);
+        button.click();
     }
 
     //Получение текста ответа для выпадающего списка на вопрос по индексу

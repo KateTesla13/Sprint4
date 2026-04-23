@@ -2,10 +2,6 @@ package ru.yandex.praktikum.pageobject;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class OrderPage {
 
@@ -77,12 +73,7 @@ public class OrderPage {
 
     //Выбор срока аренды из выпадающего списка
     public void selectRentalPeriod(String period) {
-        driver.findElement(By.xpath("//body")).click(); //закрыть календарь, чтобы не перекрывал элементы
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); //ожидание, пока календарь закроется
-        }
+        driver.findElement(By.xpath("//body")).click(); // закрыть календарь
         driver.findElement(rentalPeriod).click();
         driver.findElement(By.xpath(".//div[text()='" + period + "']")).click();
     }
@@ -107,8 +98,7 @@ public class OrderPage {
 
     //Клик по кнопке Да
     public void confirmOrder() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(yesButton)).click();
+        driver.findElement(yesButton).click();
     }
 
 
@@ -120,5 +110,9 @@ public class OrderPage {
         setComment(commentText);
         clickOrderButton();
         confirmOrder();
+    }
+
+    public boolean isOrderCreated() {
+        return driver.findElements(By.xpath(".//div[contains(text(),'Заказ оформлен')]")).size() > 0;
     }
 }
